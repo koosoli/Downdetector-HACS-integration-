@@ -1,0 +1,30 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "Search for a Service",
+        "description": "Enter the name of the service you want to track for downtime (e.g., Facebook, Gmail, Netflix).",
+        "data": {
+          "search_query": "Service Name"
+        }
+      },
+      "select_service": {
+        "title": "Select Service",
+        "description": "Found {num_results} matching services. Select the one you want to track.",
+        "data": {
+          "service": "Service"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "Failed to connect to Downdetector API. Please try again later.",
+      "invalid_search": "Please enter a search query.",
+      "no_services_found": "No services found matching your search. Please try a different query.",
+      "service_not_found": "Selected service not found. Please try again.",
+      "unknown": "Unexpected error occurred. Please try again."
+    },
+    "abort": {
+      "already_configured": "This service is already configured."
+    }
+  }
+}
