@@ -9,7 +9,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 
 from .api import DowndetectorApiClient
-from .const import DOMAIN
+from .const import CONF_CLIENT_ID, CONF_CLIENT_SECRET, DOMAIN
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -21,12 +21,14 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     hass.data.setdefault(DOMAIN, {})
 
     session = async_get_clientsession(hass)
-    client = DowndetectorApiClient(session)
+    client = DowndetectorApiClient(
+        session, 
+        entry.data[CONF_CLIENT_ID], 
+        entry.data[CONF_CLIENT_SECRET]
+    )
 
     hass.data[DOMAIN][entry.entry_id] = {
         "client": client,
-        "service_id": entry.data["service_id"],
-        "service_name": entry.data["service_name"],
     }
 
     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)

@@ -23,6 +23,10 @@ from .const import (
     ATTR_SERVICE_ID,
     ATTR_SERVICE_NAME,
     ATTR_STATUS,
+    CONF_CLIENT_ID,
+    CONF_CLIENT_SECRET,
+    CONF_SERVICE_ID,
+    CONF_SERVICE_NAME,
     DOMAIN,
     UPDATE_INTERVAL,
 )
@@ -38,8 +42,8 @@ async def async_setup_entry(
     """Set up Downdetector sensor based on a config entry."""
     data = hass.data[DOMAIN][entry.entry_id]
     client: DowndetectorApiClient = data["client"]
-    service_id: str = data["service_id"]
-    service_name: str = data["service_name"]
+    service_id: str = entry.data[CONF_SERVICE_ID]
+    service_name: str = entry.data[CONF_SERVICE_NAME]
 
     coordinator = DowndetectorDataUpdateCoordinator(
         hass, client, service_id, service_name
@@ -75,7 +79,7 @@ class DowndetectorDataUpdateCoordinator(DataUpdateCoordinator):
     async def _async_update_data(self) -> dict[str, Any]:
         """Update data via library."""
         try:
-            status = await self.client.get_service_status(self.service_id)
+            status = await self.client.get_company_status(self.service_id)
             return status
         except Exception as err:
             raise UpdateFailed(f"Error communicating with API: {err}") from err
@@ -117,22 +121,38 @@ class DowndetectorSensor(CoordinatorEntity, SensorEntity):
             ATTR_BASELINE: self.coordinator.data.get("baseline", 0),
         }
 
-        # Determine status based on reports vs baseline
+        # Get status from API or determine based on reports vs baseline
+        api_status = self.coordinator.data.get("status", "unknown")
         current = self.coordinator.data.get("current_reports", 0)
         baseline = self.coordinator.data.get("baseline", 0)
 
-        if current > baseline * 2:
+        # Map API status to our status
+        if api_status == "danger":
             attrs[ATTR_STATUS] = "major_outage"
             self._attr_icon = "mdi:web-remove"
-        elif current > baseline * 1.5:
+        elif api_status == "warning":
             attrs[ATTR_STATUS] = "minor_outage"
             self._attr_icon = "mdi:web-clock"
-        else:
+        elif api_status == "success":
             attrs[ATTR_STATUS] = "operational"
             self._attr_icon = "mdi:web-check"
+        else:
+            # Fallback to baseline comparison
+            if baseline > 0 and current > baseline * 2:
+                attrs[ATTR_STATUS] = "major_outage"
+                self._attr_icon = "mdi:web-remove"
+            elif baseline > 0 and current > baseline * 1.5:
+                attrs[ATTR_STATUS] = "minor_outage"
+                self._attr_icon = "mdi:web-clock"
+            else:
+                attrs[ATTR_STATUS] = "operational"
+                self._attr_icon = "mdi:web-check"
 
-        if "last_updated" in self.coordinator.data:
-            attrs[ATTR_LAST_UPDATED] = self.coordinator.data["last_updated"]
+        # Add company info if available
+        if "company" in self.coordinator.data:
+            company = self.coordinator.data["company"]
+            attrs["company_slug"] = company.get("slug")
+            attrs["company_url"] = company.get("url")
 
         return attrs
 

@@ -9,6 +9,8 @@ UPDATE_INTERVAL = 300  # 5 minutes
 # Configuration
 CONF_SERVICE_ID = "service_id"
 CONF_SERVICE_NAME = "service_name"
+CONF_CLIENT_ID = "client_id"
+CONF_CLIENT_SECRET = "client_secret"
 
 # Attributes
 ATTR_BASELINE = "baseline"

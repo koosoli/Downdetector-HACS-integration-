@@ -2,6 +2,14 @@
   "config": {
     "step": {
       "user": {
+        "title": "Downdetector API Credentials",
+        "description": "Enter your Downdetector API credentials. You can get these from the Downdetector Dashboard at https://dashboard.downdetector.com/api/tokens/",
+        "data": {
+          "client_id": "Client ID",
+          "client_secret": "Client Secret"
+        }
+      },
+      "search": {
         "title": "Search for a Service",
         "description": "Enter the name of the service you want to track for downtime (e.g., Facebook, Gmail, Netflix).",
         "data": {
@@ -17,7 +25,9 @@
       }
     },
     "error": {
-      "cannot_connect": "Failed to connect to Downdetector API. Please try again later.",
+      "cannot_connect": "Failed to connect to Downdetector API. Please check your credentials and try again.",
+      "invalid_auth": "Invalid API credentials. Please check your Client ID and Client Secret.",
+      "invalid_credentials": "Please enter both Client ID and Client Secret.",
       "invalid_search": "Please enter a search query.",
       "no_services_found": "No services found matching your search. Please try a different query.",
       "service_not_found": "Selected service not found. Please try again.",
