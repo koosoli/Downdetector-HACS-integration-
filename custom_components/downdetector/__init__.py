@@ -19,10 +19,10 @@ PLATFORMS: list[Platform] = [Platform.SENSOR]
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Downdetector from a config entry."""
     hass.data.setdefault(DOMAIN, {})
-    
+
     session = async_get_clientsession(hass)
     client = DowndetectorApiClient(session)
-    
+
     hass.data[DOMAIN][entry.entry_id] = {
         "client": client,
         "service_id": entry.data["service_id"],

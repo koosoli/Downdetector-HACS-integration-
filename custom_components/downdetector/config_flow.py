@@ -7,7 +7,7 @@ from typing import Any
 import voluptuous as vol
 
 from homeassistant import config_entries
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.aiohttp_client import async_get_clientsession
 import homeassistant.helpers.config_validation as cv
@@ -22,7 +22,7 @@ async def validate_service(hass: HomeAssistant, service_id: str) -> dict[str, An
     """Validate the service ID by fetching its status."""
     session = async_get_clientsession(hass)
     client = DowndetectorApiClient(session)
-    
+
     try:
         status = await client.get_service_status(service_id)
         return {"title": service_id, "status": status}
@@ -49,15 +49,15 @@ class DowndetectorConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             search_query = user_input.get("search_query", "").strip()
-            
+
             if search_query:
                 try:
                     session = async_get_clientsession(self.hass)
                     client = DowndetectorApiClient(session)
-                    
+
                     # Search for services
                     services = await client.search_services(search_query)
-                    
+
                     if not services:
                         # If no results from search, try getting all services and filter
                         all_services = await client.get_all_services()
@@ -65,13 +65,13 @@ class DowndetectorConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
                             s for s in all_services
                             if search_query.lower() in s.get("name", "").lower()
                         ]
-                    
+
                     if services:
                         self._search_results = services
                         return await self.async_step_select_service()
                     else:
                         errors["base"] = "no_services_found"
-                        
+
                 except Exception:
                     _LOGGER.exception("Unexpected exception during service search")
                     errors["base"] = "cannot_connect"
@@ -96,21 +96,21 @@ class DowndetectorConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
 
         if user_input is not None:
             selected_name = user_input["service"]
-            
+
             # Find the selected service from search results
             for service in self._search_results:
                 if service.get("name") == selected_name:
                     self._selected_service = service
                     break
-            
+
             if self._selected_service:
                 service_id = self._selected_service.get("id") or self._selected_service.get("slug")
                 service_name = self._selected_service.get("name")
-                
+
                 # Check if already configured
                 await self.async_set_unique_id(f"{DOMAIN}_{service_id}")
                 self._abort_if_unique_id_configured()
-                
+
                 return self.async_create_entry(
                     title=service_name,
                     data={

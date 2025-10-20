@@ -20,10 +20,10 @@ class DowndetectorApiClient:
 
     async def search_services(self, query: str) -> list[dict[str, Any]]:
         """Search for services by name.
-        
+
         Args:
             query: Search query string
-            
+
         Returns:
             List of matching services with their details
         """
@@ -44,10 +44,10 @@ class DowndetectorApiClient:
 
     async def get_service_status(self, service_id: str) -> dict[str, Any]:
         """Get the current status of a service.
-        
+
         Args:
             service_id: The ID of the service to check
-            
+
         Returns:
             Service status information including baseline and current reports
         """
@@ -66,7 +66,7 @@ class DowndetectorApiClient:
 
     async def get_all_services(self) -> list[dict[str, Any]]:
         """Get all available services.
-        
+
         Returns:
             List of all services
         """

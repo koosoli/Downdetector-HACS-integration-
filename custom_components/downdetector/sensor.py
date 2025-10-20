@@ -120,7 +120,7 @@ class DowndetectorSensor(CoordinatorEntity, SensorEntity):
         # Determine status based on reports vs baseline
         current = self.coordinator.data.get("current_reports", 0)
         baseline = self.coordinator.data.get("baseline", 0)
-        
+
         if current > baseline * 2:
             attrs[ATTR_STATUS] = "major_outage"
             self._attr_icon = "mdi:web-remove"
