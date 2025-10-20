@@ -288,7 +288,7 @@ def main():
         print("  • Home Assistant config flow integration")
         print("  • HACS compatibility")
         print("\nTo use this integration:")
-        print("  1. Copy 'custom_components/downdetector' to your HA config")
+        print("  1. Copy 'custom_components/downdetector' to your Home Assistant config")
         print("  2. Restart Home Assistant")
         print("  3. Go to Settings → Devices & Services → Add Integration")
         print("  4. Search for 'Downdetector' and configure")

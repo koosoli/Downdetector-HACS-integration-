@@ -7,6 +7,8 @@ import async_timeout
 
 _LOGGER = logging.getLogger(__name__)
 
+# Official Downdetector API endpoint (separate from downdetector.com)
+# Documentation: https://downdetectorapi.com/v2/docs/
 API_BASE_URL = "https://downdetectorapi.com/v2"
 DEFAULT_TIMEOUT = 10
 

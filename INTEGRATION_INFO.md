@@ -48,6 +48,8 @@ custom_components/downdetector/
 ### API Endpoint
 Base URL: `https://downdetectorapi.com/v2`
 
+**Note**: This is the official Downdetector API endpoint (downdetectorapi.com), which is separate from the main Downdetector website (downdetector.com). The API is documented at https://downdetectorapi.com/v2/docs/
+
 ## Configuration Flow (`config_flow.py`)
 
 ### Steps
