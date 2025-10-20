@@ -1,0 +1,7 @@
+{
+  "name": "Downdetector",
+  "content_in_root": false,
+  "filename": "downdetector",
+  "render_readme": true,
+  "homeassistant": "2023.1.0"
+}
