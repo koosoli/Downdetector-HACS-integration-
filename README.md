@@ -148,10 +148,7 @@ This integration uses the [Downdetector API v2](https://downdetectorapi.com/v2/d
 
 ## Support
 
-For issues, feature requests, or contributions, please visit the [GitHub repository](https://github.com/koosoli/Downdetector-HACS-integration-/issues).
 
 **For API-related issues, contact Downdetector directly:** support@downdetector.com
 
-## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
